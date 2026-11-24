@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:16
+    container_name: fellowship-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      # Volume nomeado: os dados sobrevivem se o container for removido
+      - fellowship-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    container_name: fellowship-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # "db" é o NOME DO SERVIÇO; dentro do container, localhost seria a própria API
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "8080:8080"
+
+volumes:
+  fellowship-pgdata:
