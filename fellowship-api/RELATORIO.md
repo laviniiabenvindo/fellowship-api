@@ -90,7 +90,6 @@ _(Cole um teste do projeto e explique cada parte com suas palavras: preparação
 - `UP` garante que as regras de negócio funcionam? Não. Quer dizer que as verificações de saúde configuradas passaram naquele momento; não prova que todos os fluxos e regras de negócio estão corretos.
 - Por que configurar com cuidado os endpoints do Actuator? Porque eles podem revelar informações sobre a aplicação e seu ambiente. É importante expor só o necessário e proteger os endpoints adequadamente.
 
-> Experimentos que ajudam (faça e registre): trocar `db` por `localhost` no `DB_URL`; `docker compose down` vs `down -v`; remover um `when(...)` de um teste; parar o banco e consultar o health.
 
 ## 11. Conclusão
 Com este trabalho, entendi melhor como os testes automatizados ajudam a encontrar problemas e como separar os testes de Service dos testes de Controller. Também aprendi como gerar e executar o JAR, configurar a aplicação por variáveis de ambiente e usar o Docker Compose para iniciar a API junto com o PostgreSQL. Um ponto que exige atenção é a configuração da conexão entre os containers: dentro do Compose, a API precisa usar o nome do serviço do banco, e não `localhost`. Como melhoria, eu incluiria mais testes para os casos de erro e automatizaria a execução dos testes e do build a cada alteração no projeto.
